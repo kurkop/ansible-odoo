@@ -1,0 +1,22 @@
+---
+- name: Install PostgreSQL
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - postgresql-common
+    - postgresql-contrib
+    - postgresql-{{ postgresql.version }}
+  tags:
+    - packages
+
+
+- name: PostgreSQL | Ensure PostgreSQL is running
+  service:
+    name: postgresql
+    state: started
+
+- postgresql_privs: >
+    db=postgres
+    privs=ALL
+    type=database
+    obj=library
+    role=odoo

@@ -1,0 +1,13 @@
+#- hosts: all
+#  remote_user: vagrant
+#  user: vagrant
+- name: Install Common
+  hosts: all
+  sudo: yes
+  remote_user: vagrant
+  roles:
+    - common
+    - nginx
+    - postgres
+  #atasks:
+    # This should work too / #2372

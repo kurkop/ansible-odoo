@@ -1,0 +1,31 @@
+---
+- name: Nginx - Install Nginx
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - nginx
+  tags:
+    - packages
+
+- name: Nginx - Add configuration odoo.conf
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "{{nginx.etc_path}}/sites-available/odoo"
+    owner: "root"
+    group: "root"
+    mode: 0755
+  with_items:
+    - odoo
+
+- name: Nginx | Softlink to sites-enabled
+  file:
+    src: "{{nginx.etc_path}}/sites-available/odoo"
+    dest: "{{nginx.etc_path}}/sites-enabled/odoo"
+    state: link
+
+- name: Nginx | Restart
+  apt:
+    pkg: nginx
+    state: present
+  notify:
+    - restart nginx
+

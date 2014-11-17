@@ -1,0 +1,16 @@
+nginx:
+  etc_path: /etc/nginx
+
+postgresql:
+  version: 9.1
+  install_development_headers: true
+  user: odoodb
+
+system:
+  odoo_user: odoo
+  odoo_group: odoo
+
+odoo:
+  version: 8.0
+  home: odoo
+  repo_git: https://github.com/odoo/odoo.git
