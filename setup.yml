@@ -6,7 +6,6 @@
   sudo: yes
   remote_user: vagrant
   #remote_user: odoo
-  #sudo-pass: jpa1123
   roles:
     - common
     - nginx
