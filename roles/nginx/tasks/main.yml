@@ -14,7 +14,7 @@
     group: "root"
     mode: 0755
   with_items:
-    - odoo
+    - nginx_odoo
 
 - name: Nginx | Softlink to sites-enabled
   file:

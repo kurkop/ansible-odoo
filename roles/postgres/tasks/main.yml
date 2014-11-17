@@ -1,6 +1,6 @@
 ---
 - name: Install PostgreSQL
-  apt: pkg={{ item }} state=installed
+  apt: pkg={{ item }} #state=installed
   with_items:
     - postgresql-common
     - postgresql-contrib
@@ -8,15 +8,19 @@
   tags:
     - packages
 
-
 - name: PostgreSQL | Ensure PostgreSQL is running
   service:
     name: postgresql
     state: started
 
-- postgresql_privs: >
-    db=postgres
-    privs=ALL
-    type=database
-    obj=library
-    role=odoo
+- name: Ensure user has access to the database
+  sudo_user: postgres
+  postgresql_user: db=template1
+                   name={{ postgresql.user }}
+                   password={{ postgresql.user_password }}
+                   priv=ALL
+                   state=present
+
+- name: Postgres | Add perission
+  sudo_user: postgres
+  postgresql_user: name={{ postgresql.user }} role_attr_flags=SUPERUSER,CREATEDB

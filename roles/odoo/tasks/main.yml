@@ -1,0 +1,61 @@
+---
+- name: Virtualenv | Installation
+  pip: name=virtualenvwrapper
+
+- name: Virtualenv | Creating and Activating
+  template: src=templates/venv_exec.j2 dest=/home/{{ system.odoo_user }}/activator mode=755
+
+- name: Virtualenv | Activating Virtualenv
+  command: /home/{{ system.odoo_user }}/activator
+
+- name: Virtualenv | Copying requirements
+  template: src=requirements_{{odoo.version}}.j2 dest=/home/{{ system.odoo_user }}/requirements_{{odoo.version}}.txt mode=644
+
+- name: Virtualenv | Installing requirements
+  pip: requirements=/home/{{ system.odoo_user }}/requirements_{{odoo.version}}.txt
+
+- name: Odoo | Clone repo
+  git: 
+    repo: "{{ odoo.repo_git }}"
+    depth: 1
+    dest: "/home/{{ system.odoo_user }}/{{ odoo.home }}"
+    version: "8.0"
+
+- name: Odoo | Change owner
+  file: path=/home/{{ system.odoo_user }} owner={{ system.odoo_user }} group={{ system.odoo_group }} mode=0755 recurse=yes
+
+- name: Odoo | Create /var/log/odoo
+  file: path=/var/log/odoo owner=odoo group=odoo mode=0755 state=directory
+
+- name: Odoo | Copy odoo.conf
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "/etc/odoo.conf"
+    owner: "odoo"
+    group: "odoo"
+    mode: 0755
+  with_items:
+    - odoo_conf
+
+- name: Odoo | Copy /etc/init.d/odoo
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "/etc/init.d/odoo"
+    owner: "root"
+    group: "root"
+    mode: 0755
+  with_items:
+    - odoo
+
+- name: Set Odoo service runlevels
+  command: update-rc.d odoo defaults
+  changed_when: False
+  tags:
+    - odoo
+
+- name: Enable Odoo service
+  service: name=odoo enabled=yes state=started
+  tags:
+    - odoo
+
+

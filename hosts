@@ -1,3 +1,6 @@
 [odoo]
 odoo1 ansible_ssh_host=192.168.33.2
 
+#[news]
+#odoo_hector ansible_ssh_host=23.253.158.61 ansible_sudo_pass=jpa1123
+
