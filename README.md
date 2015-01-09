@@ -17,8 +17,10 @@ Playbooks to install and run Odoo, Nginx, Postgres and coming soon uwsgi.
     apt-get update
     ssh-keygen
 
-####Copy content from id_dsa.pub (Home) to .ssh/authorized_keys (Vagrant)
+#####Copy content from id_dsa.pub (Home) to .ssh/authorized_keys (Vagrant)
 
 ####Run Ansible Playbooks:
     ansible-playbook -c paramiko -i hosts setup.yml
+    
+#####Take a coffee...
 
