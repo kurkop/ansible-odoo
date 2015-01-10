@@ -15,11 +15,7 @@
   pip: requirements=/home/{{ system.odoo_user }}/requirements_{{odoo.version}}.txt
 
 - name: Odoo | Clone repo
-  git: 
-    repo: "{{ odoo.repo_git }}"
-    depth: 1
-    dest: "/home/{{ system.odoo_user }}/{{ odoo.home }}"
-    version: "8.0"
+  git: repo={{ odoo.repo_git }} depth="1" dest="/home/{{ system.odoo_user }}/{{ odoo.home }}" version="8.0" update=no
 
 - name: Odoo | Change owner
   file: path=/home/{{ system.odoo_user }} owner={{ system.odoo_user }} group={{ system.odoo_group }} mode=0750 recurse=yes
