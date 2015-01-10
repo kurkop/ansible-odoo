@@ -2,7 +2,7 @@ nginx:
   etc_path: /etc/nginx
 
 postgresql:
-  version: 9.1
+  version: 9.3
   install_development_headers: true
   user: odoo
   user_password: d3m0Onlin30d00

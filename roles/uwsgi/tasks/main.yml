@@ -7,13 +7,35 @@
   tags:
     - packages
 
-#- name: Nginx - Add configuration odoo.conf
-#  template:
-#    src: "templates/{{ item }}.j2"
-#    dest: "{{nginx.etc_path}}/sites-available/odoo"
-#    owner: "root"
-#    group: "root"
-#    mode: 0755
-#  with_items:
-#    - nginx_odoo
+- name: Odoo - Change openerp-wsgi.py
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "/home/{{ system.odoo_user }}/{{ odoo.home }}/openerp-wsgi.py"
+    owner: "odoo"
+    group: "odoo"
+    mode: 0755
+  with_items:
+    - openerp_wsgi_py
 
+- name: Nginx - Add configuration odoo.conf
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "/etc/odoo.ini"
+    owner: "odoo"
+    group: "odoo"
+    mode: 0755
+  with_items:
+    - odoo_ini
+
+- name: Odoo - Change openerp-wsgi.py
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "/home/{{ system.odoo_user }}/{{ odoo.home }}/openerp-wsgi.py"
+    owner: "odoo"
+    group: "odoo"
+    mode: 0755
+  with_items:
+    - openerp_wsgi_py
+
+- name: Restart uwsgi
+  service: name=odoo state=restarted

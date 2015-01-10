@@ -1,0 +1,14 @@
+[uwsgi]
+http-socket = 127.0.0.1:9000
+chdir = /home/odoo/odoo/
+wsgi-file = openerp-wsgi.py
+pidfile = /var/run/odoo.pid
+plugins = syslog
+processes = 2
+threads = 1
+stats = 127.0.0.1:9191
+uid = odoo
+gid = odoo
+logger = syslog:uwsgi,local1
+lazy = False
+listen = 128

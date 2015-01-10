@@ -30,9 +30,9 @@ xmlrpcs_interface =
 # specify the TCP port for the XML-RPC Secure protocol
 xmlrpcs_port = 8071
 # specify the certificate file for the SSL connection
-secure_cert_file = server.cert
+# secure_cert_file = server.cert
 # specify the private key file for the SSL connection
-secure_pkey_file = server.pkey
+# secure_pkey_file = server.pkey
 ## NET-RPC - NET-RPC Configuration
 # enable the NETRPC protocol
 netrpc = False
@@ -70,4 +70,4 @@ syslog = False
 log_handler = ["[':INFO']"]
 # specify the level of the logging. Accepted values: info, debug_rpc, warn, test, critical, debug_sql, error, debug, debug_rpc_answer, notset
 #log_level = debug
-log_level = info
+log_level = error

@@ -22,10 +22,9 @@
     dest: "{{nginx.etc_path}}/sites-enabled/odoo"
     state: link
 
-- name: Nginx | Restart
-  apt:
-    pkg: nginx
-    state: present
-  notify:
-    - restart nginx
+- name: Nginx | Delete default sites
+  file: path="{{nginx.etc_path}}/sites-available/default" state=absent
+  file: path="{{nginx.etc_path}}/sites-enabled/default" state=absent
 
+- name: Nginx | Restart
+  service: name=nginx state=restarted

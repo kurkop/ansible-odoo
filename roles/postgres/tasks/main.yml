@@ -21,6 +21,6 @@
                    priv=ALL
                    state=present
 
-- name: Postgres | Add perission
+- name: PostgresSQL | Add permission
   sudo_user: postgres
   postgresql_user: name={{ postgresql.user }} role_attr_flags=SUPERUSER,CREATEDB

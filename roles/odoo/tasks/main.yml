@@ -14,18 +14,24 @@
 - name: Virtualenv | Installing requirements
   pip: requirements=/home/{{ system.odoo_user }}/requirements_{{odoo.version}}.txt
 
-- name: Odoo | Clone repo
-  git: 
-    repo: "{{ odoo.repo_git }}"
-    depth: 1
-    dest: "/home/{{ system.odoo_user }}/{{ odoo.home }}"
-    version: "8.0"
+#- name: Odoo | Clone repo
+#  git: 
+#    repo: "{{ odoo.repo_git }}"
+#    depth: 1
+#    dest: "/home/{{ system.odoo_user }}/{{ odoo.home }}"
+#    version: "8.0"
 
 - name: Odoo | Change owner
-  file: path=/home/{{ system.odoo_user }} owner={{ system.odoo_user }} group={{ system.odoo_group }} mode=0755 recurse=yes
+  file: path=/home/{{ system.odoo_user }} owner={{ system.odoo_user }} group={{ system.odoo_group }} mode=0750 recurse=yes
+
+- name: Odoo | Adding user www-data to group odoo
+  command: gpasswd -a www-data odoo
 
 - name: Odoo | Create /var/log/odoo
-  file: path=/var/log/odoo owner=odoo group=odoo mode=0755 state=directory
+  file: path=/var/log/odoo owner=odoo group=odoo mode=0750 state=directory
+
+- name: Odoo | Create /var/run/odoo.pid
+  file: path=/var/run/odoo.pid state=touch owner=odoo group=odoo mode=0644
 
 - name: Odoo | Copy odoo.conf
   template:
@@ -33,29 +39,18 @@
     dest: "/etc/odoo.conf"
     owner: "odoo"
     group: "odoo"
-    mode: 0755
+    mode: 0750
   with_items:
     - odoo_conf
 
-- name: Odoo | Copy /etc/init.d/odoo
+- name: Odoo | Copy /etc/init/odoo
   template:
     src: "templates/{{ item }}.j2"
-    dest: "/etc/init.d/odoo"
+    dest: "/etc/init/odoo.conf"
     owner: "root"
     group: "root"
-    mode: 0755
+    mode: 0750
   with_items:
-    - odoo
-
-- name: Set Odoo service runlevels
-  command: update-rc.d odoo defaults
-  changed_when: False
-  tags:
-    - odoo
-
-- name: Enable Odoo service
-  service: name=odoo enabled=yes state=started
-  tags:
     - odoo
 
 
